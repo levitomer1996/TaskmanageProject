@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1029877002165",
+    "project_id": "tasks-ebbf5",
+    "storage_bucket": "tasks-ebbf5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029877002165:android:b17a1e6fc3bab8b848b3fc",
+        "android_client_info": {
+          "package_name": "com.example.taskmanage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzDMN0ucweRXXc7CmxnwgIRG7yNKKDQ6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

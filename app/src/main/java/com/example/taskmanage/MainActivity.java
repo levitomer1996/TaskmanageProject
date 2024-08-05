@@ -2,13 +2,9 @@ package com.example.taskmanage;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
-
+import com.google.android.material.snackbar.Snackbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,20 +32,26 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        // Check if the user is signed in (non-null)
-        if (currentUser == null) {
-            // If not signed in, redirect to the SignInActivity
-            Intent intent = new Intent(MainActivity.this, SigninActivity.class);
-            startActivity(intent);
-            finish(); // Close the MainActivity so the user can't go back to it
-            return; // Prevent further execution of onCreate
-        }
-
+        // Initialize UI bindings
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
 
+        // Check if the user is signed in (non-null)
+        if (currentUser != null) {
+            // If the user is signed in, redirect to TaskListActivity
+            Intent intent = new Intent(MainActivity.this, TaskListActivity.class);
+            startActivity(intent);
+            finish(); // Close the MainActivity so the user can't go back to it
+        } else {
+            // If not signed in, redirect to the SignInActivity
+            Intent intent = new Intent(MainActivity.this, SigninActivity.class);
+            startActivity(intent);
+            finish(); // Close the MainActivity so the user can't go back to it
+        }
+
+        // The following code is executed only if the user is not redirected
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

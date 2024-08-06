@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import models.Task;
+
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    private List<String> taskList;
+    private List<Task> taskList;
 
-    public TaskAdapter(List<String> taskList) {
+    public TaskAdapter(List<Task> taskList) {
         this.taskList = taskList;
     }
 
@@ -26,7 +28,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        holder.taskTextView.setText(taskList.get(position));
+        Task task = taskList.get(position);
+        holder.taskTextView.setText(task.getTitle()); // Assuming Task has a getTitle() method
     }
 
     @Override

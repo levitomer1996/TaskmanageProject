@@ -1,5 +1,6 @@
 package com.example.taskmanage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,14 +8,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Adapters.TaskAdapter;
+import Controller.TaskDataBaseManager;
+import Interfaces.DataCallback;
+import models.Task;
 
 public class TaskListActivity extends AppCompatActivity {
 
     private RecyclerView taskRecyclerView;
     private TaskAdapter taskAdapter;
-    private ArrayList<String> tasks;
+    private List<Task> tasks;
+    private TaskDataBaseManager tdb = new TaskDataBaseManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +37,9 @@ public class TaskListActivity extends AppCompatActivity {
         findViewById(R.id.createButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createTask();
+                // Redirect to CreateTaskActivity
+                Intent intent = new Intent(TaskListActivity.this, CreateTaskActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -41,11 +49,28 @@ public class TaskListActivity extends AppCompatActivity {
                 deleteTask();
             }
         });
+
+        loadTasks();
+    }
+
+    private void loadTasks() {
+        tdb.getAll(new DataCallback<Task>() {
+            @Override
+            public void onSuccess(List<Task> data) {
+                tasks.clear();
+                tasks.addAll(data);
+                taskAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                // Handle the error
+            }
+        });
     }
 
     private void createTask() {
-        tasks.add("Task " + (tasks.size() + 1));
-        taskAdapter.notifyItemInserted(tasks.size() - 1);
+        // Example function, might not be necessary
     }
 
     private void deleteTask() {

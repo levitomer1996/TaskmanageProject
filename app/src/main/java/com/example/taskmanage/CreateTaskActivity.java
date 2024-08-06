@@ -5,13 +5,18 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 
+import Controller.TaskDataBaseManager;
+import models.Task;
+
 public class CreateTaskActivity extends AppCompatActivity {
 
+    private TaskDataBaseManager tdb = new TaskDataBaseManager(); // Database Manager Instance
     private TextInputEditText titleEditText;
     private TextView dateTextView;
     private Calendar calendar;
@@ -58,7 +63,18 @@ public class CreateTaskActivity extends AppCompatActivity {
         String title = titleEditText.getText().toString();
         String date = dateTextView.getText().toString();
 
-        // Handle the saving of the task (e.g., save to a database or send to another activity)
-        // For now, you might just display a toast or log the details
+        if (title.isEmpty()) {
+            Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create a new Task object
+        Task task = new Task(null, title, date, false);
+
+        // Save the task using TaskDataBaseManager
+        tdb.save(task);
+
+        Toast.makeText(this, "Task saved successfully", Toast.LENGTH_SHORT).show();
+        finish(); // Close the activity after saving
     }
 }

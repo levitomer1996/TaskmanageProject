@@ -69,7 +69,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         }
 
         // Create a new Task object
-        Task task = new Task(null, title, date, false);
+        Task task = new Task(null, null,title, date, false);
 
         // Save the task using TaskDataBaseManager
         tdb.save(task);

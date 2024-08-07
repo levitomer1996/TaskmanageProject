@@ -2,7 +2,9 @@ package com.example.taskmanage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,11 +14,11 @@ import java.util.List;
 
 import Adapters.TaskAdapter;
 import Controller.TaskDataBaseManager;
-import Interfaces.DataCallback;
 import models.Task;
 
 public class TaskListActivity extends AppCompatActivity {
 
+    private final String TAG = "TaskListActivity";
     private RecyclerView taskRecyclerView;
     private TaskAdapter taskAdapter;
     private List<Task> tasks;
@@ -54,29 +56,37 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
     private void loadTasks() {
-        tdb.getAll(new DataCallback<Task>() {
+        Log.d(TAG, "Loading tasks...");
+
+        tdb.getAll(new TaskDataBaseManager.TaskDataCallback() {
             @Override
-            public void onSuccess(List<Task> data) {
-                tasks.clear();
-                tasks.addAll(data);
-                taskAdapter.notifyDataSetChanged();
+            public void onSuccess(List<Task> fetchedTasks) {
+                tasks.clear();  // Clear the old list
+                tasks.addAll(fetchedTasks);  // Add all fetched tasks
+                taskAdapter.notifyDataSetChanged();  // Notify the adapter to refresh the RecyclerView
+                Log.d(TAG, "Loaded " + tasks.size() + " tasks.");
             }
 
             @Override
             public void onFailure(Exception e) {
-                // Handle the error
+                Log.e(TAG, "Error loading tasks", e);
             }
         });
     }
 
     private void createTask() {
-        // Example function, might not be necessary
+        // Example task creation
+        Task newTask = new Task(null, null, "New Task", "12/31/2024", false);
+        taskAdapter.addTask(newTask);
+        // You might want to save this task to the database using tdb.save(newTask);
+        tdb.save(newTask);
     }
 
     private void deleteTask() {
         if (!tasks.isEmpty()) {
-            tasks.remove(tasks.size() - 1);
-            taskAdapter.notifyItemRemoved(tasks.size());
+            int lastIndex = tasks.size() - 1;
+            taskAdapter.removeTask(lastIndex);
+            // Optionally remove from the database as well
         }
     }
 }

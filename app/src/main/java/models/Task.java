@@ -3,13 +3,16 @@ package models;
 public class Task {
 
     private String uid;
+    private String user_id;
     private String title;
     private String timeToFinish;
     private Boolean isDone;
 
+
     // Constructor
-    public Task(String uid, String title, String timeToFinish, Boolean isDone) {
+    public Task(String uid, String user_id,String title, String timeToFinish, Boolean isDone) {
         this.uid = uid;
+        this.user_id = user_id;
         this.title = title;
         this.timeToFinish = timeToFinish;
         this.isDone = isDone;
@@ -50,6 +53,13 @@ public class Task {
 
     public void setIsDone(Boolean isDone) {
         this.isDone = isDone;
+    }
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     @Override

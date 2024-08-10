@@ -24,6 +24,14 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp" />
 
+    <!-- ProgressBar for loading tasks -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
     <!-- Create Button -->
     <Button
         android:id="@+id/createButton"

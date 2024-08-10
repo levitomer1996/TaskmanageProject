@@ -75,11 +75,7 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
     private void createTask() {
-        // Example task creation
-        Task newTask = new Task(null, null, "New Task", "12/31/2024", false);
-        taskAdapter.addTask(newTask);
-        // You might want to save this task to the database using tdb.save(newTask);
-        tdb.save(newTask);
+
     }
 
     private void deleteTask() {

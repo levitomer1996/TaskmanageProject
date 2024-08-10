@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,8 +38,28 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Task task = taskList.get(position);
         Log.i(TAG, "This task: " + task.toString());
         Log.i(TAG, "onBindViewHolder called for position " + position);
+
         holder.taskTitleTextView.setText(task.getTitle());
         holder.taskDateTextView.setText(task.getTimeToFinish());
+
+        // Change background color based on priority
+        String priority = task.getPriority();
+        if (priority != null) {
+            switch (priority) {
+                case "LOW":
+                    holder.taskItemLayout.setBackgroundColor(holder.itemView.getContext().getResources().getColor(android.R.color.holo_green_light));
+                    break;
+                case "MEDIUM":
+                    holder.taskItemLayout.setBackgroundColor(holder.itemView.getContext().getResources().getColor(android.R.color.holo_orange_light));
+                    break;
+                case "HIGH":
+                    holder.taskItemLayout.setBackgroundColor(holder.itemView.getContext().getResources().getColor(android.R.color.holo_red_light));
+                    break;
+                default:
+                    holder.taskItemLayout.setBackgroundColor(holder.itemView.getContext().getResources().getColor(android.R.color.white)); // Default background
+                    break;
+            }
+        }
     }
 
     @Override
@@ -63,11 +84,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     static class TaskViewHolder extends RecyclerView.ViewHolder {
         TextView taskTitleTextView;
         TextView taskDateTextView;
+        RelativeLayout taskItemLayout;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             taskTitleTextView = itemView.findViewById(R.id.taskTitleTextView);
             taskDateTextView = itemView.findViewById(R.id.taskDateTextView);
+            taskItemLayout = itemView.findViewById(R.id.taskItemLayout); // Make sure this matches the XML ID
         }
     }
 }

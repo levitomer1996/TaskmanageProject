@@ -3,6 +3,7 @@ package com.example.taskmanage;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
@@ -18,10 +20,11 @@ import Controller.TaskDataBaseManager;
 import models.Task;
 
 public class CreateTaskActivity extends AppCompatActivity {
-
+    private String TAG = "CreateTaskActivity";
     private TaskDataBaseManager tdb = new TaskDataBaseManager(); // Database Manager Instance
     private TextInputEditText titleEditText;
     private TextView dateTextView;
+    private MaterialAutoCompleteTextView priorityDropdown;
     private Calendar calendar;
 
     @Override
@@ -32,18 +35,28 @@ public class CreateTaskActivity extends AppCompatActivity {
         // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Customize the back button icon
-       
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         titleEditText = findViewById(R.id.titleEditText);
         dateTextView = findViewById(R.id.dateTextView);
+        priorityDropdown = findViewById(R.id.priorityDropdown);
         Button datePickerButton = findViewById(R.id.datePickerButton);
         Button saveButton = findViewById(R.id.saveButton);
 
         calendar = Calendar.getInstance();
+
+        // Initialize the dropdown with priorities
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                getResources().getStringArray(R.array.priority_array)
+        );
+        priorityDropdown.setOnClickListener(v -> {
+            priorityDropdown.showDropDown();
+        });
+        priorityDropdown.setAdapter(adapter);
+        priorityDropdown.setAdapter(adapter);
 
         datePickerButton.setOnClickListener(v -> showDatePickerDialog());
 
@@ -74,6 +87,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     private void saveTask() {
         String title = titleEditText.getText().toString();
         String date = dateTextView.getText().toString();
+        String priority = priorityDropdown.getText().toString();
 
         if (title.isEmpty()) {
             Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show();
@@ -81,7 +95,8 @@ public class CreateTaskActivity extends AppCompatActivity {
         }
 
         // Create a new Task object
-        Task task = new Task(null, null, title, date, false);
+        Task task = new Task(null, null, title, date, false, priority);
+
 
         // Save the task using TaskDataBaseManager
         tdb.save(task);

@@ -15,7 +15,7 @@ import models.Task;
 public class TaskDataBaseManager {
 
     private static final String TAG = "TaskDatabaseManager";
-    private static final String TASKS_NODE = "task";
+    private static final String TASKS_NODE = "tasks";
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
 
@@ -39,6 +39,7 @@ public class TaskDataBaseManager {
                             List<Task> tasks = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Task taskObj = document.toObject(Task.class);
+                                Log.i(TAG, "Fetched task:" + taskObj);
                                 tasks.add(taskObj);
                             }
                             Log.d(TAG, "Fetched " + tasks.size() + " tasks");
@@ -59,7 +60,10 @@ public class TaskDataBaseManager {
         String taskId = db.collection(TASKS_NODE).document().getId();
         task.setUid(taskId);
         task.setUser_id(currentUser.getUid());
-        db.collection(TASKS_NODE).document(taskId).set(task);
+        Log.i(TAG, "Saving Task with Priority: " + task.getPriority());  // Log the priority
+        db.collection(TASKS_NODE).document(taskId).set(task)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Task successfully written!"))
+                .addOnFailureListener(e -> Log.w(TAG, "Error writing task", e));
     }
 
     public interface TaskDataCallback {

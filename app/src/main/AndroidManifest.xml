@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.taskmanage"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.taskmanage">
 
     <application
         android:allowBackup="true"
@@ -46,6 +46,7 @@
             android:name=".SignupActivity"
             android:exported="false" />
 
+        
     </application>
 
 </manifest>

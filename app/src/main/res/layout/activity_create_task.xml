@@ -2,16 +2,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     tools:context=".CreateTaskActivity">
+
+    <!-- Toolbar (App Bar) -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <!-- Title Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/titleInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Task Title"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:layout_below="@id/toolbar"
+        android:hint="Task Title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/titleEditText"
@@ -37,8 +47,8 @@
         android:layout_below="@id/datePickerButton"
         android:layout_marginTop="8dp"
         android:text="No date selected"
-        android:textSize="16sp"
-        android:textColor="?attr/colorPrimaryDark" />
+        android:textColor="?attr/colorPrimaryDark"
+        android:textSize="16sp" />
 
     <!-- Save Button -->
     <com.google.android.material.button.MaterialButton
@@ -57,8 +67,8 @@
         android:layout_below="@id/saveButton"
         android:layout_marginTop="16dp"
         android:text="Failed to save task"
-        android:textSize="16sp"
         android:textColor="@android:color/holo_red_dark"
+        android:textSize="16sp"
         android:visibility="gone" /> <!-- Initially hidden -->
 
 </RelativeLayout>

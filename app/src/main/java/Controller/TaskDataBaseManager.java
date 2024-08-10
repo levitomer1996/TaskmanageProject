@@ -1,12 +1,9 @@
 package Controller;
 
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,18 +29,17 @@ public class TaskDataBaseManager {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         List<Task> tasks = new ArrayList<>();
-                        QuerySnapshot querySnapshot = task.getResult();
-                        for (QueryDocumentSnapshot document : querySnapshot) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
                             Task taskObj = document.toObject(Task.class);
                             tasks.add(taskObj);
                         }
                         callback.onSuccess(tasks);
                     } else {
-                        Log.e(TAG, "Error getting tasks: ", task.getException());
                         callback.onFailure(task.getException());
                     }
                 });
     }
+
 
     public void save(Task task) {
         String taskId = db.collection(TASKS_NODE).document().getId();

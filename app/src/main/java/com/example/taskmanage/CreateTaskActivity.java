@@ -2,11 +2,14 @@ package com.example.taskmanage;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
@@ -25,6 +28,15 @@ public class CreateTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
+
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Customize the back button icon
+       
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         titleEditText = findViewById(R.id.titleEditText);
         dateTextView = findViewById(R.id.dateTextView);
@@ -69,12 +81,22 @@ public class CreateTaskActivity extends AppCompatActivity {
         }
 
         // Create a new Task object
-        Task task = new Task(null, null,title, date, false);
+        Task task = new Task(null, null, title, date, false);
 
         // Save the task using TaskDataBaseManager
         tdb.save(task);
 
         Toast.makeText(this, "Task saved successfully", Toast.LENGTH_SHORT).show();
         finish(); // Close the activity after saving
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // Handle back button press
+            onBackPressed(); // This will take you back to the previous activity (TaskListActivity)
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

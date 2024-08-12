@@ -28,7 +28,6 @@ public class TaskDataBaseManager {
         }
     }
 
-
     public void getAll(final TaskDataCallback callback) {
         if (currentUser != null) {
             db.collection(TASKS_NODE)
@@ -55,7 +54,6 @@ public class TaskDataBaseManager {
         }
     }
 
-
     public void save(Task task) {
         String taskId = db.collection(TASKS_NODE).document().getId();
         task.setUid(taskId);
@@ -66,8 +64,32 @@ public class TaskDataBaseManager {
                 .addOnFailureListener(e -> Log.w(TAG, "Error writing task", e));
     }
 
+    public void deleteById(String taskId, final TaskDeleteCallback callback) {
+        if (currentUser != null) {
+            db.collection(TASKS_NODE).document(taskId)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d(TAG, "Task with ID " + taskId + " successfully deleted.");
+                        callback.onSuccess();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w(TAG, "Error deleting task with ID " + taskId, e);
+                        callback.onFailure(e);
+                    });
+        } else {
+            Log.e(TAG, "User not authenticated");
+            callback.onFailure(new Exception("User not authenticated"));
+        }
+    }
+
     public interface TaskDataCallback {
         void onSuccess(List<Task> tasks);
+
+        void onFailure(Exception e);
+    }
+
+    public interface TaskDeleteCallback {
+        void onSuccess();
 
         void onFailure(Exception e);
     }

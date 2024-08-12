@@ -33,7 +33,7 @@ public class TaskListActivity extends AppCompatActivity {
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         tasks = new ArrayList<>();
-        taskAdapter = new TaskAdapter(tasks);
+        taskAdapter = new TaskAdapter(tasks, tdb);
         taskRecyclerView.setAdapter(taskAdapter);
 
         findViewById(R.id.createButton).setOnClickListener(new View.OnClickListener() {
@@ -41,14 +41,8 @@ public class TaskListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Redirect to CreateTaskActivity
                 Intent intent = new Intent(TaskListActivity.this, CreateTaskActivity.class);
+                
                 startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteTask();
             }
         });
 
@@ -72,17 +66,5 @@ public class TaskListActivity extends AppCompatActivity {
                 Log.e(TAG, "Error loading tasks", e);
             }
         });
-    }
-
-    private void createTask() {
-
-    }
-
-    private void deleteTask() {
-        if (!tasks.isEmpty()) {
-            int lastIndex = tasks.size() - 1;
-            taskAdapter.removeTask(lastIndex);
-            // Optionally remove from the database as well
-        }
     }
 }

@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,15 +15,18 @@ import com.example.taskmanage.R;
 
 import java.util.List;
 
+import Controller.TaskDataBaseManager;
 import models.Task;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private final String TAG = "TaskAdapter";
     private List<Task> taskList;
+    private TaskDataBaseManager taskDataBaseManager;
 
-    public TaskAdapter(List<Task> taskList) {
+    public TaskAdapter(List<Task> taskList, TaskDataBaseManager taskDataBaseManager) {
         this.taskList = taskList;
+        this.taskDataBaseManager = taskDataBaseManager;
     }
 
     @NonNull
@@ -60,6 +64,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     break;
             }
         }
+
+        // Set up the delete button
+        holder.deleteTaskButton.setOnClickListener(v -> {
+            deleteTask(task, position);
+        });
     }
 
     @Override
@@ -67,30 +76,36 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return taskList.size(); // Should return the correct size of the task list
     }
 
-    // Method to add a task
-    public void addTask(Task task) {
-        taskList.add(task);
-        notifyItemInserted(taskList.size() - 1);
-    }
+    // Method to delete a task
+    private void deleteTask(Task task, int position) {
+        taskDataBaseManager.deleteById(task.getUid(), new TaskDataBaseManager.TaskDeleteCallback() {
+            @Override
+            public void onSuccess() {
+                // Remove task from the list and notify adapter
+                taskList.remove(position);
+                notifyItemRemoved(position);
+                Log.d(TAG, "Task deleted successfully.");
+            }
 
-    // Method to remove a task
-    public void removeTask(int position) {
-        if (position < taskList.size()) {
-            taskList.remove(position);
-            notifyItemRemoved(position);
-        }
+            @Override
+            public void onFailure(Exception e) {
+                Log.e(TAG, "Failed to delete task", e);
+            }
+        });
     }
 
     static class TaskViewHolder extends RecyclerView.ViewHolder {
         TextView taskTitleTextView;
         TextView taskDateTextView;
         RelativeLayout taskItemLayout;
+        ImageButton deleteTaskButton;  // Added reference to delete button
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             taskTitleTextView = itemView.findViewById(R.id.taskTitleTextView);
             taskDateTextView = itemView.findViewById(R.id.taskDateTextView);
-            taskItemLayout = itemView.findViewById(R.id.taskItemLayout); // Make sure this matches the XML ID
+            taskItemLayout = itemView.findViewById(R.id.taskItemLayout); // Ensure this matches the XML ID
+            deleteTaskButton = itemView.findViewById(R.id.deleteTaskButton); // Initialize delete button
         }
     }
 }

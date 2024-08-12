@@ -16,11 +16,13 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 
+import Adapters.TaskAdapter;
 import Controller.TaskDataBaseManager;
 import models.Task;
 
 public class CreateTaskActivity extends AppCompatActivity {
     private String TAG = "CreateTaskActivity";
+    private TaskAdapter taskAdapter;
     private TaskDataBaseManager tdb = new TaskDataBaseManager(); // Database Manager Instance
     private TextInputEditText titleEditText;
     private TextView dateTextView;

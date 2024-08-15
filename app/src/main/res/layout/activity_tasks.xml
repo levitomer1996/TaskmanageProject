@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".TaskListActivity">
 
-    <!-- Toolbar (if needed, otherwise remove this part) -->
+    <!-- Toolbar for the app bar with Sign Out button -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"

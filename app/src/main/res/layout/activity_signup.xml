@@ -101,12 +101,29 @@
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Verify Password Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/verifyPasswordInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordInputLayout"
+        android:layout_marginTop="16dp"
+        android:hint="Verify Password">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/verifyPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <!-- Signup Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signupButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passwordInputLayout"
+        android:layout_below="@id/verifyPasswordInputLayout"
         android:layout_marginTop="24dp"
         android:text="Signup" />
 

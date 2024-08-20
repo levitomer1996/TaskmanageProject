@@ -35,7 +35,7 @@ public class SignupActivity extends AppCompatActivity {
     private String TAG = "SignupActivity";
 
     private FirebaseAuth mAuth;
-    private TextInputEditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText;
+    private TextInputEditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, verifyPasswordEditText;
     private Button signupButton, selectImageButton;
     private ImageView profileImageView;
     private Uri imageUri;
@@ -53,6 +53,7 @@ public class SignupActivity extends AppCompatActivity {
         lastNameEditText = findViewById(R.id.lastNameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        verifyPasswordEditText = findViewById(R.id.verifyPasswordEditText);
         signupButton = findViewById(R.id.signupButton);
         profileImageView = findViewById(R.id.profileImageView);
         selectImageButton = findViewById(R.id.selectImageButton);
@@ -126,6 +127,7 @@ public class SignupActivity extends AppCompatActivity {
         String lastName = lastNameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
+        String verifyPassword = verifyPasswordEditText.getText().toString().trim();
 
         if (firstName.isEmpty()) {
             firstNameEditText.setError("First Name is required");
@@ -154,6 +156,12 @@ public class SignupActivity extends AppCompatActivity {
         if (password.length() < 6) {
             passwordEditText.setError("Password should be at least 6 characters");
             passwordEditText.requestFocus();
+            return;
+        }
+
+        if (!password.equals(verifyPassword)) {
+            verifyPasswordEditText.setError("Passwords do not match");
+            verifyPasswordEditText.requestFocus();
             return;
         }
 
@@ -190,7 +198,7 @@ public class SignupActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             // Redirect to another activity (e.g., main app screen or login)
-            Intent intent = new Intent(this, CreateTaskActivity.class);
+            Intent intent = new Intent(this, SigninActivity.class);
             startActivity(intent);
             finish();
         }
